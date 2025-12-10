@@ -10,6 +10,8 @@ class AdminRestaurantService {
     required String address,
     required String logoUrl,
     required String backgroundUrl,
+    double? latitude,
+    double? longitude,
   }) async {
     // Use set() with the custom ID instead of add()
     await _firestore.collection('restaurants').doc(id).set({
@@ -21,7 +23,18 @@ class AdminRestaurantService {
       'rating': null,
       'reviews': null,
       'phone': null,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
       'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  // Update restaurant location
+  Future<void> updateRestaurantLocation(String restaurantId, double latitude, double longitude) async {
+    await _firestore.collection('restaurants').doc(restaurantId).update({
+      'latitude': latitude,
+      'longitude': longitude,
+      'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 }

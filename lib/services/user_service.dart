@@ -36,5 +36,14 @@ class UserService {
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
+
+  // Update user location
+  Future<void> updateUserLocation(String userId, double latitude, double longitude) async {
+    await _db.collection('users').doc(userId).update({
+      'latitude': latitude,
+      'longitude': longitude,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
 }
 

@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Mapbox SDK Token (contains sensitive information)
+# Uncomment the line below if you add your token to gradle.properties
+# /android/gradle.properties

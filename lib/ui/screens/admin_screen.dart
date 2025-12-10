@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'add_restaurant_screen.dart'; 
 import 'add_food_screen.dart';
+import 'seed_locations_screen.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -126,6 +127,35 @@ class AdminScreen extends StatelessWidget {
                         ),
                         child: const Text(
                           'Add Food Item',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: 200,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SeedLocationsScreen(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFC23232),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          'Seed Locations',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

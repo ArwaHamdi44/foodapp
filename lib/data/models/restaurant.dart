@@ -10,6 +10,8 @@ class Restaurant {
   final String? phone;
   final String? description;
   final String? backgroundImage;
+  final double? latitude;
+  final double? longitude;
 
   Restaurant({
     required this.id,
@@ -21,6 +23,8 @@ class Restaurant {
     this.phone,
     this.description,
     this.backgroundImage,
+    this.latitude,
+    this.longitude,
   });
 
   // Create from Firestore document
@@ -36,6 +40,8 @@ class Restaurant {
       phone: data['phone'] as String?,
       description: data['description'] as String?,
       backgroundImage: data['backgroundImage'] as String?,
+      latitude: data['latitude']?.toDouble(),
+      longitude: data['longitude']?.toDouble(),
     );
   }
 
@@ -51,6 +57,8 @@ class Restaurant {
       phone: map['phone'] as String?,
       description: map['description'] as String?,
       backgroundImage: map['backgroundImage'] as String?,
+      latitude: map['latitude']?.toDouble(),
+      longitude: map['longitude']?.toDouble(),
     );
   }
 
@@ -65,6 +73,8 @@ class Restaurant {
       if (phone != null) 'phone': phone,
       if (description != null) 'description': description,
       if (backgroundImage != null) 'backgroundImage': backgroundImage,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
     };
   }
 
@@ -79,6 +89,8 @@ class Restaurant {
     String? phone,
     String? description,
     String? backgroundImage,
+    double? latitude,
+    double? longitude,
   }) {
     return Restaurant(
       id: id ?? this.id,
@@ -90,6 +102,8 @@ class Restaurant {
       phone: phone ?? this.phone,
       description: description ?? this.description,
       backgroundImage: backgroundImage ?? this.backgroundImage,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
 }

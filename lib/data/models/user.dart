@@ -12,6 +12,8 @@ class User {
   final List<String>? savedAddresses;
   final List<String>? favoriteFoodIds;
   final List<String>? favoriteRestaurantIds;
+  final double? latitude;
+  final double? longitude;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -26,6 +28,8 @@ class User {
     this.savedAddresses,
     this.favoriteFoodIds,
     this.favoriteRestaurantIds,
+    this.latitude,
+    this.longitude,
     this.createdAt,
     this.updatedAt,
   });
@@ -59,6 +63,8 @@ class User {
       favoriteRestaurantIds: data['favoriteRestaurantIds'] != null
           ? List<String>.from(data['favoriteRestaurantIds'])
           : null,
+      latitude: data['latitude']?.toDouble(),
+      longitude: data['longitude']?.toDouble(),
       createdAt: (data['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (data['updatedAt'] as Timestamp?)?.toDate(),
     );
@@ -83,6 +89,8 @@ class User {
       favoriteRestaurantIds: map['favoriteRestaurantIds'] != null
           ? List<String>.from(map['favoriteRestaurantIds'])
           : null,
+      latitude: map['latitude']?.toDouble(),
+      longitude: map['longitude']?.toDouble(),
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),
     );
@@ -100,6 +108,8 @@ class User {
       if (savedAddresses != null) 'savedAddresses': savedAddresses,
       if (favoriteFoodIds != null) 'favoriteFoodIds': favoriteFoodIds,
       if (favoriteRestaurantIds != null) 'favoriteRestaurantIds': favoriteRestaurantIds,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
       'createdAt': createdAt != null
           ? Timestamp.fromDate(createdAt!)
           : FieldValue.serverTimestamp(),
@@ -130,6 +140,8 @@ class User {
     List<String>? savedAddresses,
     List<String>? favoriteFoodIds,
     List<String>? favoriteRestaurantIds,
+    double? latitude,
+    double? longitude,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -144,6 +156,8 @@ class User {
       savedAddresses: savedAddresses ?? this.savedAddresses,
       favoriteFoodIds: favoriteFoodIds ?? this.favoriteFoodIds,
       favoriteRestaurantIds: favoriteRestaurantIds ?? this.favoriteRestaurantIds,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
