@@ -1,4 +1,3 @@
-// Export all models for easy importing
 export 'restaurant.dart';
 export 'food.dart';
 export 'cart_item.dart';

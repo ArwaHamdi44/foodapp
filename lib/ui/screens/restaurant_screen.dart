@@ -42,15 +42,15 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     try {
       print('Loading restaurant with ID: ${widget.restaurantId}');
       
-      // Load restaurant data
+     
       final restaurant = await _restaurantViewModel.getRestaurantById(widget.restaurantId);
       print('Restaurant loaded: ${restaurant?.name}');
       
-      // Load foods for this restaurant
+      
       final foods = await _foodViewModel.getFoodsByRestaurant(widget.restaurantId);
       print('Foods found: ${foods.length}');
       
-      // Load user's favorite food IDs
+     
       Set<String> favoriteFoodIds = {};
       if (_authService.currentUserId != null) {
         try {
@@ -80,7 +80,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     }
   }
 
-  // <CHANGE> Add method to toggle favorite status
+  
   Future<void> _toggleFavorite(String foodId) async {
     if (_authService.currentUserId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -97,7 +97,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
       final isFavorite = _favoriteFoodIds.contains(foodId);
       
       if (isFavorite) {
-        // Remove from favorites
         await _userViewModel.removeFavoriteFood(foodId);
         setState(() {
           _favoriteFoodIds.remove(foodId);
@@ -455,7 +454,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                       ),
                                     ),
                                     const SizedBox(height: 8),
-                                    // <CHANGE> Updated favorite button with dynamic state and filled/outlined icons
                                     IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),

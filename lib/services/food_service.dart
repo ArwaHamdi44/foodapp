@@ -5,7 +5,6 @@ class FoodService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final String _collectionName = 'foods';
 
-  // Get all foods for a specific restaurant
   Future<List<Food>> getFoodsByRestaurant(String restaurantId) async {
     try {
       final snapshot = await _firestore
@@ -21,7 +20,6 @@ class FoodService {
     }
   }
 
-  // Get all foods
   Future<List<Food>> getAllFoods() async {
     try {
       final snapshot = await _firestore
@@ -36,7 +34,6 @@ class FoodService {
     }
   }
 
-  // Get popular foods sorted by rating
   Future<List<Food>> getPopularFoods({int limit = 3}) async {
     try {
       final snapshot = await _firestore
@@ -53,7 +50,6 @@ class FoodService {
     }
   }
 
-  // Get a single food by ID
   Future<Food?> getFoodById(String foodId) async {
     try {
       final doc = await _firestore
@@ -70,7 +66,6 @@ class FoodService {
     }
   }
 
-  // Add a new food
   Future<String> addFood(Food food) async {
     try {
       final docRef = await _firestore
@@ -82,7 +77,6 @@ class FoodService {
     }
   }
 
-  // Update a food
   Future<void> updateFood(String foodId, Food food) async {
     try {
       await _firestore
@@ -94,7 +88,6 @@ class FoodService {
     }
   }
 
-  // Delete a food
   Future<void> deleteFood(String foodId) async {
     try {
       await _firestore

@@ -38,7 +38,6 @@ class Order {
     this.updatedAt,
   });
 
-  // Helper method to parse items list from dynamic data
   static List<OrderItem> _parseItems(dynamic itemsData) {
     if (itemsData == null) return [];
     return (itemsData as List<dynamic>)
@@ -46,13 +45,11 @@ class Order {
         .toList();
   }
 
-  // Helper method to parse integer from dynamic data
   static int _parseInt(dynamic value, {int defaultValue = 0}) {
     if (value == null) return defaultValue;
     return value is int ? value : (value as num).toInt();
   }
 
-  // Create from Firestore document
   factory Order.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
 
@@ -71,7 +68,6 @@ class Order {
     );
   }
 
-  // Create from Map
   factory Order.fromMap(Map<String, dynamic> map, String id) {
     return Order(
       id: id,
@@ -88,7 +84,6 @@ class Order {
     );
   }
 
-  // Convert to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'userId': userId,
@@ -106,7 +101,7 @@ class Order {
     };
   }
 
-  // Helper method to parse status string to enum
+  
   static OrderStatus _parseStatus(dynamic status) {
     if (status == null) return OrderStatus.pending;
 
@@ -132,16 +127,13 @@ class Order {
     }
   }
 
-  // Format total price as string
+
   String get formattedTotal => '$total EGP';
 
-  // Get subtotal (total - deliveryFee - taxes)
   int get subtotal => total - deliveryFee - taxes;
 
-  // Format subtotal as string
   String get formattedSubtotal => '$subtotal EGP';
 
-  // Get status as display string
   String get statusDisplay {
     switch (status) {
       case OrderStatus.pending:
@@ -161,11 +153,11 @@ class Order {
     }
   }
 
-  // Check if order can be cancelled
+  
   bool get canCancel =>
       status == OrderStatus.pending || status == OrderStatus.confirmed;
 
-  // Create a copy with modified fields
+  
   Order copyWith({
     String? id,
     String? userId,

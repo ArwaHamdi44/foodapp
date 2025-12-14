@@ -21,7 +21,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   final AuthService _authService = AuthService();
 
   List<Food> _favoriteFoods = [];
-  Map<String, String> _restaurantNames = {}; // Map of restaurantId -> restaurantName
+  Map<String, String> _restaurantNames = {}; 
   bool _isLoading = true;
 
   @override
@@ -33,7 +33,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Reload favorites when screen becomes visible
     _loadFavorites();
   }
 
@@ -52,7 +51,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     try {
       final favoriteFoodIds = await _userViewModel.getFavoriteFoodIds();
 
-      // Fetch food details and restaurant names
       final foods = <Food>[];
       final restaurantNamesMap = <String, String>{};
       
@@ -61,7 +59,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           final food = await _foodViewModel.getFoodById(foodId);
           if (food != null) {
             foods.add(food);
-            // Fetch restaurant name if not already fetched
             if (!restaurantNamesMap.containsKey(food.restaurantId)) {
               try {
                 final restaurant = await _restaurantViewModel.getRestaurantById(food.restaurantId);
@@ -69,12 +66,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   restaurantNamesMap[food.restaurantId] = restaurant.name;
                 }
               } catch (e) {
-                // Skip if restaurant not found
+                
               }
             }
           }
         } catch (e) {
-          // Skip if food not found
+          
         }
       }
 

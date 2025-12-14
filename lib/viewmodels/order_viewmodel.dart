@@ -9,7 +9,6 @@ class OrderViewModel {
   final CartService _cartService = CartService();
   final AuthService _authService = AuthService();
 
-  // Get user orders stream
   Stream<List<Order>> getUserOrdersStream() {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -18,7 +17,6 @@ class OrderViewModel {
     return _orderService.getUserOrdersStream(userId);
   }
 
-  // Get user orders (one-time fetch)
   Future<List<Order>> getUserOrders() async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -31,7 +29,6 @@ class OrderViewModel {
     }
   }
 
-  // Get order by ID
   Future<Order?> getOrderById(String id) async {
     try {
       return await _orderService.getOrderById(id);
@@ -40,7 +37,6 @@ class OrderViewModel {
     }
   }
 
-  // Place order from cart
   Future<Order> placeOrderFromCart({
     required String address,
     required String paymentMethod,
@@ -51,18 +47,17 @@ class OrderViewModel {
     }
 
     try {
-      // Get current cart
+     
       final cart = await _cartService.getCart(userId);
       if (cart == null || cart.items.isEmpty) {
         throw Exception('Cart is empty');
       }
 
-      // Convert cart items to order items
       final orderItems = cart.items.map((item) => OrderItem.fromCartItem(item)).toList();
 
-      // Create order
+    
       final order = Order(
-        id: '', // Will be set by Firestore
+        id: '', 
         userId: userId,
         items: orderItems,
         total: cart.total,
@@ -74,13 +69,11 @@ class OrderViewModel {
         createdAt: DateTime.now(),
       );
 
-      // Place order
+      
       final docRef = await _orderService.placeOrder(order);
       
-      // Update order with ID
       final placedOrder = order.copyWith(id: docRef.id);
 
-      // Clear cart after successful order
       await _cartService.clearCart(userId);
 
       return placedOrder;
@@ -89,7 +82,6 @@ class OrderViewModel {
     }
   }
 
-  // Place order with custom items
   Future<Order> placeOrder({
     required List<OrderItem> items,
     required int subtotal,
@@ -126,7 +118,7 @@ class OrderViewModel {
     }
   }
 
-  // Cancel order
+  
   Future<void> cancelOrder(String orderId) async {
     try {
       final order = await _orderService.getOrderById(orderId);
@@ -144,7 +136,6 @@ class OrderViewModel {
     }
   }
 
-  // Get pending orders
   Future<List<Order>> getPendingOrders() async {
     try {
       final orders = await getUserOrders();

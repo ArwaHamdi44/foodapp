@@ -5,8 +5,6 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // This widget is now handled directly in HomePage
-    // Keeping it for backward compatibility but it won't be used
     return const SizedBox.shrink();
   }
 }

@@ -4,12 +4,11 @@ import '../data/models/restaurant.dart';
 class RestaurantViewModel {
   final RestaurantService _restaurantService = RestaurantService();
 
-  // Get all restaurants stream
+  
   Stream<List<Restaurant>> getRestaurantsStream() {
     return _restaurantService.getRestaurantsStream();
   }
 
-  // Get all restaurants (one-time fetch)
   Future<List<Restaurant>> getRestaurants() async {
     try {
       return await _restaurantService.getRestaurants();
@@ -18,7 +17,6 @@ class RestaurantViewModel {
     }
   }
 
-  // Get restaurant by ID
   Future<Restaurant?> getRestaurantById(String id) async {
     try {
       return await _restaurantService.getRestaurantById(id);
@@ -27,7 +25,7 @@ class RestaurantViewModel {
     }
   }
 
-  // Search restaurants by name
+  
   Future<List<Restaurant>> searchRestaurants(String query) async {
     try {
       final restaurants = await _restaurantService.getRestaurants();

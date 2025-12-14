@@ -28,10 +28,10 @@ class _HomePageState extends State<HomePage> {
 
   List<Restaurant> _restaurantResults = [];
   List<Food> _foodResults = [];
-  Map<String, String> _restaurantNames = {}; // Map to store restaurant names by ID
+  Map<String, String> _restaurantNames = {}; 
   bool _isSearching = false;
   bool _hasSearchQuery = false;
-  String _selectedTab = 'All'; // 'All', 'Restaurants', 'Food'
+  String _selectedTab = 'All'; 
 
   @override
   void dispose() {
@@ -58,13 +58,12 @@ class _HomePageState extends State<HomePage> {
       final restaurants = await _restaurantViewModel.searchRestaurants(query);
       final allRestaurants = await _restaurantViewModel.getRestaurants();
       
-      // Build restaurant name map
       final restaurantNameMap = <String, String>{};
       for (final restaurant in allRestaurants) {
         restaurantNameMap[restaurant.id] = restaurant.name;
       }
       
-      // Search foods across all restaurants
+
       final allFoods = <Food>[];
       for (final restaurant in allRestaurants) {
         try {
@@ -143,7 +142,6 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
-                  // Header with logout button
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -245,7 +243,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  // Tab selector (only show when searching)
                   if (_hasSearchQuery)
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

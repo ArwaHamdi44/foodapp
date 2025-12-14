@@ -27,7 +27,6 @@ class Food {
     this.isAvailable,
   });
 
-  // Create from Firestore document
   factory Food.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Food(
@@ -47,7 +46,6 @@ class Food {
     );
   }
 
-  // Create from Map
   factory Food.fromMap(Map<String, dynamic> map) {
     return Food(
       id: map['id'] ?? '',
@@ -66,7 +64,7 @@ class Food {
     );
   }
 
-  // Convert to Map for Firestore
+
   Map<String, dynamic> toMap() {
     return {
       'restaurantId': restaurantId,
@@ -81,10 +79,9 @@ class Food {
     };
   }
 
-  // Format price as string
+
   String get formattedPrice => '$price EGP';
 
-  // Create a copy with modified fields
   Food copyWith({
     String? id,
     String? restaurantId,

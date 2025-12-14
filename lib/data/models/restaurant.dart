@@ -27,7 +27,6 @@ class Restaurant {
     this.longitude,
   });
 
-  // Create from Firestore document
   factory Restaurant.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Restaurant(
@@ -45,7 +44,6 @@ class Restaurant {
     );
   }
 
-  // Create from Map
   factory Restaurant.fromMap(Map<String, dynamic> map) {
     return Restaurant(
       id: map['id'] ?? '',
@@ -62,7 +60,6 @@ class Restaurant {
     );
   }
 
-  // Convert to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -78,7 +75,6 @@ class Restaurant {
     };
   }
 
-  // Create a copy with modified fields
   Restaurant copyWith({
     String? id,
     String? name,

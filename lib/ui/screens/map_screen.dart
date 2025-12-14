@@ -42,7 +42,7 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initializeMap();
     _loadRestaurants();
-    _getUserLocationAndCenter(); // Get user location on init
+    _getUserLocationAndCenter(); 
     _searchController.addListener(_onSearchChanged);
     _searchFocusNode.addListener(_onSearchFocusChanged);
   }
@@ -75,19 +75,15 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _initializeMap() async {
-    // Note: You need to set your Mapbox access token
-    // You can get it from https://account.mapbox.com/access-tokens/
-    // For now, using a placeholder - replace with your actual token
+    
     _mapboxAccessToken = 'pk.eyJ1IjoiYXJ3YWhhbWRpLTIzNTEwMyIsImEiOiJjbWl2amQxMmcwbGdoM2NzYnJoeDNxZmFzIn0.Dgfp0fNcT3_QPaYbRtfzzQ';
     
-    // Initialize Mapbox
+    
     MapboxOptions.setAccessToken(_mapboxAccessToken!);
   }
 
-  /// Get user location and center map on it initially
   Future<void> _getUserLocationAndCenter() async {
     try {
-      // Get current location
       final position = await _locationService.getCurrentLocation();
       
       if (position == null) {
@@ -95,12 +91,10 @@ class _MapScreenState extends State<MapScreen> {
         return;
       }
 
-      // Store user position for distance calculations
       setState(() {
         _userPosition = position;
       });
 
-      // Save user location to Firestore
       final userId = _authService.currentUserId;
       if (userId != null) {
         await _userService.updateUserLocation(
@@ -110,7 +104,6 @@ class _MapScreenState extends State<MapScreen> {
         );
       }
 
-      // Wait for map to be ready, then center and add user pin
       Future.delayed(const Duration(milliseconds: 800), () async {
         if (mapboxMap != null) {
           await mapboxMap!.flyTo(
@@ -127,7 +120,6 @@ class _MapScreenState extends State<MapScreen> {
           );
         }
         
-        // Add user location pin with custom design
         _addUserLocationPin(position);
       });
     } catch (e) {
@@ -153,7 +145,6 @@ class _MapScreenState extends State<MapScreen> {
     });
 
     try {
-      // Get current location
       final position = await _locationService.getCurrentLocation();
       
       if (position == null) {
@@ -175,7 +166,6 @@ class _MapScreenState extends State<MapScreen> {
         _isLoading = false;
       });
 
-      // Save user location to Firestore
       final userId = _authService.currentUserId;
       if (userId != null) {
         await _userService.updateUserLocation(
@@ -185,7 +175,6 @@ class _MapScreenState extends State<MapScreen> {
         );
       }
 
-      // Move camera to user location
       if (mapboxMap != null) {
         await mapboxMap!.flyTo(
           CameraOptions(
@@ -201,12 +190,10 @@ class _MapScreenState extends State<MapScreen> {
         );
       }
 
-      // Store user position for distance calculations
       setState(() {
         _userPosition = position;
       });
 
-      // Add user location pin
       _addUserLocationPin(position);
     } catch (e) {
       print('Error getting location: $e');
@@ -232,18 +219,15 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     try {
-      // Remove existing user location pin if any
       if (_userLocationAnnotation != null) {
         await _pointAnnotationManager!.delete(_userLocationAnnotation!);
       }
 
       print('Adding user location pin at: ${position.latitude}, ${position.longitude}');
 
-      // Generate custom user location pin image
       final userPinImage = await MapPinHelper.generateUserLocationPin();
       final userPinBytes = await MapPinHelper.imageToBytes(userPinImage);
 
-      // Try to add image to map style with error handling
       try {
         final mbxImage = MbxImage(
           width: 48,
@@ -256,7 +240,6 @@ class _MapScreenState extends State<MapScreen> {
         print('Note: Could not add custom image, using default pin: $e');
       }
 
-      // Create annotation for user location with custom modern design
       final annotation = PointAnnotationOptions(
         geometry: Point(
           coordinates: Position(
@@ -273,7 +256,6 @@ class _MapScreenState extends State<MapScreen> {
       print('User location annotation created with id: ${_userLocationAnnotation!.id}');
     } catch (e) {
       print('Error adding user location pin: $e');
-      // Fallback to simple pin
       try {
         final annotation = PointAnnotationOptions(
           geometry: Point(
@@ -299,14 +281,12 @@ class _MapScreenState extends State<MapScreen> {
     if (mapboxMap == null || _pointAnnotationManager == null) return;
 
     try {
-      // Filter restaurants with valid locations
       final restaurantsWithLocation = _restaurants
           .where((r) => r.latitude != null && r.longitude != null)
           .toList();
 
       if (restaurantsWithLocation.isEmpty) return;
 
-      // Clear existing annotations
       if (_restaurantAnnotations.isNotEmpty) {
         for (final annotation in _restaurantAnnotations.values) {
           await _pointAnnotationManager!.delete(annotation);
@@ -314,16 +294,13 @@ class _MapScreenState extends State<MapScreen> {
         _restaurantAnnotations.clear();
       }
 
-      // Create annotations for each restaurant with their logos
       for (final restaurant in restaurantsWithLocation) {
         try {
-          // Generate a custom marker with the restaurant logo
           final markerImage = await _generateRestaurantMarker(restaurant);
           if (markerImage != null) {
             final markerBytes = await MapPinHelper.imageToBytes(markerImage);
             final imageId = 'restaurant-marker-${restaurant.id}';
             
-            // Try to add image to map style
             try {
               final mbxImage = MbxImage(
                 width: 60,
@@ -335,7 +312,7 @@ class _MapScreenState extends State<MapScreen> {
               print('Could not add custom image for ${restaurant.name}: $e');
             }
 
-            // Create annotation with restaurant logo
+            
             final annotation = PointAnnotationOptions(
               geometry: Point(
                 coordinates: Position(
@@ -353,7 +330,7 @@ class _MapScreenState extends State<MapScreen> {
           }
         } catch (e) {
           print('Error adding pin for restaurant ${restaurant.name}: $e');
-          // Fallback: use default restaurant pin
+
           await _addDefaultRestaurantPin(restaurant);
         }
       }
@@ -362,23 +339,19 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  /// Generate a custom marker with restaurant logo
   Future<ui.Image?> _generateRestaurantMarker(Restaurant restaurant) async {
     try {
       const size = 60.0;
       final recorder = ui.PictureRecorder();
       final canvas = Canvas(recorder);
       
-      // Draw teardrop pin shape
       final paint = Paint()..color = const Color(0xFFC23232);
       
-      // Pin body path
       final path = Path();
       const pinWidth = size * 0.8;
       const pinHeight = size;
       const pinRadius = pinWidth / 2;
       
-      // Create teardrop shape
       path.moveTo(pinWidth / 2, 0);
       path.arcToPoint(
         Offset(pinWidth, pinRadius),
@@ -393,15 +366,12 @@ class _MapScreenState extends State<MapScreen> {
       path.lineTo(pinWidth / 2, pinHeight * 0.8);
       path.close();
       
-      // Draw shadow
       paint.color = Colors.black.withOpacity(0.2);
       canvas.drawPath(path, paint);
       
-      // Draw pin body
       paint.color = const Color(0xFFC23232);
       canvas.drawPath(path, paint);
       
-      // Draw white circle for logo
       paint.color = Colors.white;
       canvas.drawCircle(
         Offset(pinWidth / 2, pinRadius),
@@ -409,7 +379,6 @@ class _MapScreenState extends State<MapScreen> {
         paint,
       );
       
-      // Try to load and draw restaurant logo
       try {
         final image = await _loadNetworkImage(restaurant.image);
         if (image != null) {
@@ -422,7 +391,6 @@ class _MapScreenState extends State<MapScreen> {
             logoSize,
           );
           
-          // Clip to circle
           canvas.save();
           canvas.clipPath(
             Path()..addOval(Rect.fromCircle(
@@ -433,11 +401,9 @@ class _MapScreenState extends State<MapScreen> {
           canvas.drawImageRect(image, srcRect, dstRect, Paint());
           canvas.restore();
         } else {
-          // Draw restaurant icon as fallback
           _drawRestaurantIcon(canvas, pinWidth / 2, pinRadius, pinRadius * 0.5);
         }
       } catch (e) {
-        // Draw restaurant icon as fallback
         _drawRestaurantIcon(canvas, pinWidth / 2, pinRadius, pinRadius * 0.5);
       }
       
@@ -449,7 +415,7 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  /// Draw a restaurant fork and knife icon
+  
   void _drawRestaurantIcon(Canvas canvas, double x, double y, double size) {
     final paint = Paint()
       ..color = const Color(0xFFC23232)
@@ -457,7 +423,7 @@ class _MapScreenState extends State<MapScreen> {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    // Fork (left side)
+    
     canvas.drawLine(
       Offset(x - size * 0.3, y - size * 0.4),
       Offset(x - size * 0.3, y + size * 0.4),
@@ -469,7 +435,7 @@ class _MapScreenState extends State<MapScreen> {
       paint,
     );
 
-    // Knife (right side)
+    
     canvas.drawLine(
       Offset(x + size * 0.3, y - size * 0.4),
       Offset(x + size * 0.3, y + size * 0.4),
@@ -482,7 +448,6 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  /// Load network image for restaurant logo
   Future<ui.Image?> _loadNetworkImage(String url) async {
     try {
       final completer = Completer<ui.Image?>();
@@ -506,7 +471,7 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-  /// Add a default restaurant pin (fallback)
+  
   Future<void> _addDefaultRestaurantPin(Restaurant restaurant) async {
     try {
       final restaurantPinImage = await MapPinHelper.generateRestaurantPin();
@@ -598,7 +563,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: Stack(
         children: [
-          // Mapbox Map with GestureDetector for click handling
+          
           GestureDetector(
             onTapDown: (TapDownDetails details) {
               _handleMapTap(details.globalPosition);
@@ -608,7 +573,7 @@ class _MapScreenState extends State<MapScreen> {
               cameraOptions: CameraOptions(
                 center: Point(
                   coordinates: Position(
-                    -122.4194, // Default to San Francisco (replace with your default location)
+                    -122.4194, 
                     37.7749,
                   ),
                 ),
@@ -620,22 +585,21 @@ class _MapScreenState extends State<MapScreen> {
                 mapboxMap = map;
               });
               
-              // Get point annotation manager
+              
               _pointAnnotationManager = await mapboxMap!.annotations.createPointAnnotationManager();
               
-              // Set up annotation click listener
+             
               _pointAnnotationManager!.addOnPointAnnotationClickListener(_AnnotationClickListener(
                 onAnnotationClick: _handleAnnotationClick,
               ));
               
-              // Add restaurant pins after map is created
+              
               Future.delayed(const Duration(milliseconds: 500), () {
                 _addRestaurantPins();
               });
             },
             ),
           ),
-          // Floating search bar with dropdown
           Positioned(
             top: 20,
             left: 20,
@@ -689,7 +653,6 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                 ),
-                // Dropdown list for search results
                 if (_filteredRestaurants.isNotEmpty)
                   Container(
                     margin: const EdgeInsets.only(top: 8),
@@ -912,18 +875,15 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  /// Handle direct annotation clicks (more reliable than gesture detector)
   void _handleAnnotationClick(PointAnnotation annotation) {
     print('Annotation clicked: ${annotation.id}');
     
-    // Check if it's the user location annotation
     if (_userLocationAnnotation != null && annotation.id == _userLocationAnnotation!.id) {
       print('User location annotation clicked!');
       _showUserLocationModal();
       return;
     }
     
-    // Check if it's a restaurant annotation
     for (final entry in _restaurantAnnotations.entries) {
       if (entry.value.id == annotation.id) {
         final restaurant = _restaurants.firstWhere(
@@ -944,13 +904,11 @@ class _MapScreenState extends State<MapScreen> {
     if (mapboxMap == null || _pointAnnotationManager == null) return;
 
     try {
-      // Convert screen coordinates to geographic coordinates
       final screenCoordinate = ScreenCoordinate(
         x: tapPosition.dx,
         y: tapPosition.dy,
       );
       
-      // Get the geographic coordinate at the tap location
       final tapPoint = await mapboxMap!.coordinateForPixel(screenCoordinate);
       final tapLat = tapPoint.coordinates.lat.toDouble();
       final tapLng = tapPoint.coordinates.lng.toDouble();
@@ -979,7 +937,7 @@ class _MapScreenState extends State<MapScreen> {
       // Find the closest restaurant to the tap location
       Restaurant? closestRestaurant;
       double minDistance = double.infinity;
-      const threshold = 200.0; // 200 meters threshold for tap detection (increased from 100m)
+      const threshold = 200.0; 
 
       for (final entry in _restaurantAnnotations.entries) {
         final restaurant = _restaurants.firstWhere(

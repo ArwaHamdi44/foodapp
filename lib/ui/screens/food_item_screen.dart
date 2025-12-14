@@ -62,7 +62,6 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
           });
         }
       } catch (e) {
-        // If fetching fails, keep default add-ons
         if (mounted) {
           setState(() {
             _isLoadingAddOns = false;
@@ -70,7 +69,6 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
         }
       }
     } else {
-      // No foodId provided, use default add-ons
       if (mounted) {
         setState(() {
           _isLoadingAddOns = false;
@@ -90,18 +88,15 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
           });
         }
       } catch (e) {
-        // Silently fail - user might not be logged in
       }
     }
   }
 
-  // Generate a consistent foodId if not provided
   String? _getFoodId() {
     if (widget.foodId != null && widget.foodId!.isNotEmpty) {
       return widget.foodId;
     }
-    // Generate ID from name and restaurant (for items without database ID)
-    // This ensures favorites work even for hardcoded items
+
     return '${widget.restaurantName}_${widget.itemName}'.toLowerCase().replaceAll(' ', '_');
   }
 
@@ -171,14 +166,12 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
     }
   }
 
-  // Parse price from string (e.g., "132 EGP" -> 132)
   int _parsePrice(String priceString) {
     final priceStr = priceString.replaceAll(' EGP', '').trim();
     return int.tryParse(priceStr) ?? 0;
   }
 
   Future<void> _addToCart() async {
-    // Check if user is logged in
     if (_authService.currentUserId == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -196,7 +189,6 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
     });
 
     try {
-      // Get selected add-ons
       final selectedAddOnsList = <String>[];
       for (int i = 0; i < addOns.length; i++) {
         if (selectedAddOns[i]) {
@@ -204,7 +196,6 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
         }
       }
 
-      // Create cart item
       final cartItem = CartItem(
         foodId: widget.foodId ?? widget.itemName.toLowerCase().replaceAll(' ', '_'),
         name: widget.itemName,
@@ -227,7 +218,6 @@ class _FoodItemScreenState extends State<FoodItemScreen> {
           ),
         );
         
-        // Navigate to cart screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

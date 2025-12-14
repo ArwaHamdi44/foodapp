@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'cart_item.dart';
 
 class Cart {
-  final String userId; // Document ID in Firestore
+  final String userId; 
   final List<CartItem> items;
   final int subtotal;
   final int deliveryFee;
@@ -13,12 +13,12 @@ class Cart {
     required this.userId,
     required this.items,
     required this.subtotal,
-    this.deliveryFee = 20, // Default delivery fee
-    this.taxes = 10, // Default taxes
+    this.deliveryFee = 20, 
+    this.taxes = 10, 
     this.updatedAt,
   });
 
-  // Helper method to parse items list from dynamic data
+ 
   static List<CartItem> _parseItems(dynamic itemsData) {
     if (itemsData == null) return [];
     return (itemsData as List<dynamic>)
@@ -26,13 +26,13 @@ class Cart {
         .toList();
   }
 
-  // Helper method to parse integer from dynamic data
+  
   static int _parseInt(dynamic value, {int defaultValue = 0}) {
     if (value == null) return defaultValue;
     return value is int ? value : (value as num).toInt();
   }
 
-  // Create from Firestore document
+
   factory Cart.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>? ?? {};
     
@@ -46,7 +46,6 @@ class Cart {
     );
   }
 
-  // Create from Map
   factory Cart.fromMap(Map<String, dynamic> map, String userId) {
     return Cart(
       userId: userId,
@@ -58,7 +57,6 @@ class Cart {
     );
   }
 
-  // Convert to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'items': items.map((item) => item.toMap()).toList(),
@@ -69,28 +67,23 @@ class Cart {
     };
   }
 
-  // Check if cart is empty
   bool get isEmpty => items.isEmpty;
 
-  // Get total number of items (sum of quantities)
   int get totalItems => items.fold(0, (sum, item) => sum + item.quantity);
 
-  // Calculate total price (subtotal + deliveryFee + taxes)
+ 
   int get total => subtotal + deliveryFee + taxes;
 
-  // Format total as string
+  
   String get formattedTotal => '$total EGP';
 
-  // Format subtotal as string
   String get formattedSubtotal => '$subtotal EGP';
 
-  // Format delivery fee as string
   String get formattedDeliveryFee => '$deliveryFee EGP';
 
-  // Format taxes as string
+ 
   String get formattedTaxes => '$taxes EGP';
 
-  // Create a copy with modified fields
   Cart copyWith({
     String? userId,
     List<CartItem>? items,

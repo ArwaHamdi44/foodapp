@@ -6,21 +6,54 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final UserService _userService = UserService();
 
-  // Get current Firebase Auth user
   User? get currentUser => _auth.currentUser;
 
-  // Get current user ID
   String? get currentUserId => _auth.currentUser?.uid;
 
-  // Auth state stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  // Login with email and password
+  // Validation methods
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email.trim());
+  }
+
+  String? validatePassword(String password) {
+    if (password.isEmpty) {
+      return 'Password cannot be empty';
+    }
+    if (password.length < 6) {
+      return 'Password must be at least 6 characters';
+    }
+    return null; 
+  }
+
+  String? validateName(String name, String fieldName) {
+    if (name.trim().isEmpty) {
+      return '$fieldName cannot be empty';
+    }
+    if (name.trim().length < 2) {
+      return '$fieldName must be at least 2 characters';
+    }
+    return null; 
+  }
+
   Future<app_user.User> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
     try {
+      
+      if (!isValidEmail(email)) {
+        throw Exception('Please enter a valid email address');
+      }
+
+      
+      final passwordError = validatePassword(password);
+      if (passwordError != null) {
+        throw Exception(passwordError);
+      }
+
       final credential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
@@ -30,7 +63,6 @@ class AuthService {
         throw Exception('Login failed: User is null');
       }
 
-      // Fetch user profile from Firestore
       final userProfile = await _userService.getUserProfile(credential.user!.uid);
 
       if (userProfile == null) {
@@ -45,7 +77,6 @@ class AuthService {
     }
   }
 
-  // Sign up with email and password
   Future<app_user.User> signUpWithEmailAndPassword({
     required String email,
     required String password,
@@ -53,7 +84,29 @@ class AuthService {
     required String lastName,
   }) async {
     try {
-      // Create user in Firebase Auth
+    
+      if (!isValidEmail(email)) {
+        throw Exception('Please enter a valid email address');
+      }
+
+      
+      final passwordError = validatePassword(password);
+      if (passwordError != null) {
+        throw Exception(passwordError);
+      }
+
+    
+      final firstNameError = validateName(firstName, 'First name');
+      if (firstNameError != null) {
+        throw Exception(firstNameError);
+      }
+
+      
+      final lastNameError = validateName(lastName, 'Last name');
+      if (lastNameError != null) {
+        throw Exception(lastNameError);
+      }
+
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
@@ -65,7 +118,6 @@ class AuthService {
 
       final userId = credential.user!.uid;
 
-      // Create user profile in Firestore
       final userProfile = app_user.User(
         id: userId,
         email: email.trim(),
@@ -84,12 +136,10 @@ class AuthService {
     }
   }
 
-  // Sign out
   Future<void> signOut() async {
     await _auth.signOut();
   }
 
-  // Handle Firebase Auth exceptions
   String _handleAuthException(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
@@ -113,7 +163,6 @@ class AuthService {
     }
   }
 
-  // Get user profile from Firestore
   Future<app_user.User?> getUserProfile(String userId) async {
     try {
       return await _userService.getUserProfile(userId);
@@ -122,4 +171,3 @@ class AuthService {
     }
   }
 }
-

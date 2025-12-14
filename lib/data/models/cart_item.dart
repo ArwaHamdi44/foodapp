@@ -1,13 +1,13 @@
 class CartItem {
-  final String? id; // Food ID (optional, can be null if not saved yet)
+  final String? id; 
   final String foodId;
   final String name;
   final int price;
   final int quantity;
   final String image;
   final String restaurantId;
-  final String? restaurantName; // Optional for display purposes
-  final List<String>? selectedAddOns; // Optional add-ons selected by user
+  final String? restaurantName; 
+  final List<String>? selectedAddOns; 
 
   CartItem({
     this.id,
@@ -21,7 +21,7 @@ class CartItem {
     this.selectedAddOns,
   });
 
-  // Create from Map (useful for Firestore)
+  
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
       id: map['id'] as String? ?? map['foodId'] as String?,
@@ -42,7 +42,6 @@ class CartItem {
     );
   }
 
-  // Convert to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'foodId': foodId,
@@ -56,16 +55,12 @@ class CartItem {
     };
   }
 
-  // Calculate total price for this item
   int get totalPrice => price * quantity;
 
-  // Format price as string
   String get formattedPrice => '$price EGP';
 
-  // Format total price as string
   String get formattedTotalPrice => '$totalPrice EGP';
 
-  // Create a copy with modified fields
   CartItem copyWith({
     String? id,
     String? foodId,

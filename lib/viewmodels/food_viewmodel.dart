@@ -4,7 +4,6 @@ import '../services/food_service.dart';
 class FoodViewModel {
   final FoodService _foodService = FoodService();
 
-  // Get foods by restaurant ID
   Future<List<Food>> getFoodsByRestaurant(String restaurantId) async {
     try {
       return await _foodService.getFoodsByRestaurant(restaurantId);
@@ -13,7 +12,6 @@ class FoodViewModel {
     }
   }
 
-  // Get all foods
   Future<List<Food>> getAllFoods() async {
     try {
       return await _foodService.getAllFoods();
@@ -22,7 +20,7 @@ class FoodViewModel {
     }
   }
 
-  // Get popular foods sorted by rating
+  
   Future<List<Food>> getPopularFoods({int limit = 3}) async {
     try {
       return await _foodService.getPopularFoods(limit: limit);
@@ -31,7 +29,7 @@ class FoodViewModel {
     }
   }
 
-  // Get a single food by ID
+ 
   Future<Food?> getFoodById(String foodId) async {
     try {
       return await _foodService.getFoodById(foodId);
@@ -40,7 +38,6 @@ class FoodViewModel {
     }
   }
 
-  // Get add-ons for a specific food item
   Future<List<String>> getAddOnsForFood(String foodId) async {
     try {
       final food = await _foodService.getFoodById(foodId);
@@ -53,7 +50,7 @@ class FoodViewModel {
     }
   }
 
-  // Add a new food
+
   Future<String> addFood(Food food) async {
     try {
       return await _foodService.addFood(food);
@@ -62,7 +59,6 @@ class FoodViewModel {
     }
   }
 
-  // Update a food
   Future<void> updateFood(String foodId, Food food) async {
     try {
       await _foodService.updateFood(foodId, food);
@@ -71,7 +67,6 @@ class FoodViewModel {
     }
   }
 
-  // Delete a food
   Future<void> deleteFood(String foodId) async {
     try {
       await _foodService.deleteFood(foodId);

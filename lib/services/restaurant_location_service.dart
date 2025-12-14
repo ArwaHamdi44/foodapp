@@ -3,13 +3,10 @@ import 'restaurant_service.dart';
 import 'admin_restaurant_service.dart';
 import '../data/models/restaurant.dart';
 
-/// Service for managing restaurant locations
-/// This can be used from the admin panel or other parts of the app
 class RestaurantLocationService {
   final RestaurantService _restaurantService = RestaurantService();
   final AdminRestaurantService _adminRestaurantService = AdminRestaurantService();
 
-  /// Get all restaurants that need location data
   Future<List<Restaurant>> getRestaurantsWithoutLocation() async {
     final allRestaurants = await _restaurantService.getRestaurants();
     return allRestaurants
@@ -17,7 +14,6 @@ class RestaurantLocationService {
         .toList();
   }
 
-  /// Get all restaurants with location data
   Future<List<Restaurant>> getRestaurantsWithLocation() async {
     final allRestaurants = await _restaurantService.getRestaurants();
     return allRestaurants
@@ -25,7 +21,6 @@ class RestaurantLocationService {
         .toList();
   }
 
-  /// Update restaurant location
   Future<void> updateLocation(
     String restaurantId,
     double latitude,
@@ -38,7 +33,6 @@ class RestaurantLocationService {
     );
   }
 
-  /// Batch update multiple restaurant locations
   Future<void> batchUpdateLocations(
     Map<String, Map<String, double>> locations,
   ) async {

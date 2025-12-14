@@ -36,7 +36,6 @@ class _LogInScreenState extends State<LogInScreen> {
   });
 
   try {
-    // LOGIN AND GET USER MODEL (IMPORTANT)
     final user = await _authService.loginWithEmailAndPassword(
       email: _emailController.text,
       password: _passwordController.text,
@@ -44,7 +43,6 @@ class _LogInScreenState extends State<LogInScreen> {
 
     if (!mounted) return;
 
-    // *** ROLE BASED REDIRECTION ***
     if (user.role == "admin") {
       Navigator.pushReplacement(
         context,

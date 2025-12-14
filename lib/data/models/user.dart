@@ -1,4 +1,3 @@
-// Updated User Model with role attribute
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
@@ -6,7 +5,7 @@ class User {
   final String email;
   final String firstName;
   final String lastName;
-  final String role; // 'user' or 'admin'
+  final String role; 
   final String? phone;
   final String? profileImageUrl;
   final List<String>? savedAddresses;
@@ -22,7 +21,7 @@ class User {
     required this.email,
     required this.firstName,
     required this.lastName,
-    this.role = 'user', // Default to 'user'
+    this.role = 'user', 
     this.phone,
     this.profileImageUrl,
     this.savedAddresses,
@@ -34,16 +33,13 @@ class User {
     this.updatedAt,
   });
 
-  // Check if user is admin
+  
   bool get isAdmin => role == 'admin';
 
-  // Get full name
   String get fullName => '$firstName $lastName';
 
-  // Get display name (first name only)
   String get displayName => firstName;
 
-  // Create from Firestore document
   factory User.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return User(
@@ -70,14 +66,13 @@ class User {
     );
   }
 
-  // Create from Map
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'] ?? '',
       email: map['email'] ?? '',
       firstName: map['firstName'] ?? map['first_name'] ?? '',
       lastName: map['lastName'] ?? map['last_name'] ?? '',
-      role: map['role'] ?? 'user', // Default to 'user' if not set
+      role: map['role'] ?? 'user', 
       phone: map['phone'] as String?,
       profileImageUrl: map['profileImageUrl'] as String?,
       savedAddresses: map['savedAddresses'] != null
@@ -96,7 +91,6 @@ class User {
     );
   }
 
-  // Convert to Map for Firestore
   Map<String, dynamic> toMap() {
     return {
       'email': email,
@@ -117,7 +111,6 @@ class User {
     };
   }
 
-  // Convert to Map excluding sensitive data (for public display)
   Map<String, dynamic> toPublicMap() {
     return {
       'id': id,
@@ -128,7 +121,6 @@ class User {
     };
   }
 
-  // Create a copy with modified fields
   User copyWith({
     String? id,
     String? email,
@@ -163,7 +155,6 @@ class User {
     );
   }
 
-  // Add a saved address
   User addAddress(String address) {
     final addresses = savedAddresses ?? [];
     if (!addresses.contains(address)) {
@@ -172,7 +163,6 @@ class User {
     return this;
   }
 
-  // Remove a saved address
   User removeAddress(String address) {
     final addresses = savedAddresses ?? [];
     return copyWith(
@@ -180,18 +170,15 @@ class User {
     );
   }
 
-  // Check if user has saved addresses
   bool get hasSavedAddresses => 
       savedAddresses != null && savedAddresses!.isNotEmpty;
 
-  // Get initials for avatar display
   String get initials {
     final firstInitial = firstName.isNotEmpty ? firstName[0].toUpperCase() : '';
     final lastInitial = lastName.isNotEmpty ? lastName[0].toUpperCase() : '';
     return '$firstInitial$lastInitial';
   }
 
-  // Add favorite food
   User addFavoriteFood(String foodId) {
     final favorites = favoriteFoodIds ?? [];
     if (!favorites.contains(foodId)) {
@@ -200,7 +187,6 @@ class User {
     return this;
   }
 
-  // Remove favorite food
   User removeFavoriteFood(String foodId) {
     final favorites = favoriteFoodIds ?? [];
     return copyWith(
@@ -208,12 +194,10 @@ class User {
     );
   }
 
-  // Check if food is favorite
   bool isFavoriteFood(String foodId) {
     return favoriteFoodIds?.contains(foodId) ?? false;
   }
 
-  // Add favorite restaurant
   User addFavoriteRestaurant(String restaurantId) {
     final favorites = favoriteRestaurantIds ?? [];
     if (!favorites.contains(restaurantId)) {
@@ -222,7 +206,6 @@ class User {
     return this;
   }
 
-  // Remove favorite restaurant
   User removeFavoriteRestaurant(String restaurantId) {
     final favorites = favoriteRestaurantIds ?? [];
     return copyWith(
@@ -230,7 +213,6 @@ class User {
     );
   }
 
-  // Check if restaurant is favorite
   bool isFavoriteRestaurant(String restaurantId) {
     return favoriteRestaurantIds?.contains(restaurantId) ?? false;
   }

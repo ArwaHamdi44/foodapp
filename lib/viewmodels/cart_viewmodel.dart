@@ -7,7 +7,6 @@ class CartViewModel {
   final CartService _cartService = CartService();
   final AuthService _authService = AuthService();
 
-  // Get cart stream for current user
   Stream<Cart?> getCartStream() {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -16,7 +15,6 @@ class CartViewModel {
     return _cartService.getCartStream(userId);
   }
 
-  // Get cart (one-time fetch)
   Future<Cart?> getCart() async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -29,7 +27,6 @@ class CartViewModel {
     }
   }
 
-  // Add item to cart
   Future<void> addToCart(CartItem item) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -43,7 +40,6 @@ class CartViewModel {
       if (currentCart != null) {
         items = List<CartItem>.from(currentCart.items);
         
-        // Check if item already exists, update quantity if same foodId
         final existingIndex = items.indexWhere((i) => i.foodId == item.foodId);
         if (existingIndex != -1) {
           items[existingIndex] = items[existingIndex].copyWith(
@@ -71,7 +67,6 @@ class CartViewModel {
     }
   }
 
-  // Update item quantity in cart
   Future<void> updateItemQuantity(String foodId, int quantity) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -112,7 +107,6 @@ class CartViewModel {
     }
   }
 
-  // Remove item from cart
   Future<void> removeFromCart(String foodId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -142,7 +136,6 @@ class CartViewModel {
     }
   }
 
-  // Clear cart
   Future<void> clearCart() async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -156,12 +149,10 @@ class CartViewModel {
     }
   }
 
-  // Calculate subtotal from items
   int _calculateSubtotal(List<CartItem> items) {
     return items.fold(0, (sum, item) => sum + item.totalPrice);
   }
 
-  // Get cart item count
   Future<int> getCartItemCount() async {
     final cart = await getCart();
     if (cart == null) return 0;

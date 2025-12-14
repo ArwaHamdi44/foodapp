@@ -21,7 +21,6 @@ class OrderItem {
     this.selectedAddOns,
   });
 
-  // Create from Map
   factory OrderItem.fromMap(Map<String, dynamic> map) {
     return OrderItem(
       foodId: map['foodId'] ?? '',
@@ -41,7 +40,7 @@ class OrderItem {
     );
   }
 
-  // Convert to Map for Firestore
+ 
   Map<String, dynamic> toMap() {
     return {
       'foodId': foodId,
@@ -55,16 +54,16 @@ class OrderItem {
     };
   }
 
-  // Calculate total price for this item
+ 
   int get totalPrice => price * quantity;
 
-  // Format price as string
+
   String get formattedPrice => '$price EGP';
 
-  // Format total price as string
+ 
   String get formattedTotalPrice => '$totalPrice EGP';
 
-  // Create from CartItem (for converting cart to order)
+  
   factory OrderItem.fromCartItem(CartItem cartItem) {
     return OrderItem(
       foodId: cartItem.foodId,
@@ -78,7 +77,6 @@ class OrderItem {
     );
   }
 
-  // Create a copy with modified fields
   OrderItem copyWith({
     String? foodId,
     String? name,

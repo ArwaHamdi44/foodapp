@@ -6,7 +6,6 @@ class UserViewModel {
   final UserService _userService = UserService();
   final AuthService _authService = AuthService();
 
-  // Get current user profile
   Future<User?> getCurrentUserProfile() async {
     final userId = _authService.currentUserId;
     if (userId == null) return null;
@@ -17,7 +16,6 @@ class UserViewModel {
     }
   }
 
-  // Get current user profile stream
   Stream<User?> getCurrentUserProfileStream() {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -26,7 +24,6 @@ class UserViewModel {
     return _userService.getUserProfileStream(userId);
   }
 
-  // Update user profile
   Future<void> updateUserProfile({
     String? firstName,
     String? lastName,
@@ -58,7 +55,6 @@ class UserViewModel {
     }
   }
 
-  // Add saved address
   Future<void> addSavedAddress(String address) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -78,7 +74,6 @@ class UserViewModel {
     }
   }
 
-  // Remove saved address
   Future<void> removeSavedAddress(String address) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -98,7 +93,6 @@ class UserViewModel {
     }
   }
 
-  // Get saved addresses
   Future<List<String>> getSavedAddresses() async {
     try {
       final profile = await getCurrentUserProfile();
@@ -108,7 +102,6 @@ class UserViewModel {
     }
   }
 
-  // Add favorite food
   Future<void> addFavoriteFood(String foodId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -128,7 +121,6 @@ class UserViewModel {
     }
   }
 
-  // Remove favorite food
   Future<void> removeFavoriteFood(String foodId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -148,7 +140,6 @@ class UserViewModel {
     }
   }
 
-  // Check if food is favorite
   Future<bool> isFavoriteFood(String foodId) async {
     try {
       final profile = await getCurrentUserProfile();
@@ -158,7 +149,6 @@ class UserViewModel {
     }
   }
 
-  // Add favorite restaurant
   Future<void> addFavoriteRestaurant(String restaurantId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -178,7 +168,6 @@ class UserViewModel {
     }
   }
 
-  // Remove favorite restaurant
   Future<void> removeFavoriteRestaurant(String restaurantId) async {
     final userId = _authService.currentUserId;
     if (userId == null) {
@@ -198,7 +187,6 @@ class UserViewModel {
     }
   }
 
-  // Check if restaurant is favorite
   Future<bool> isFavoriteRestaurant(String restaurantId) async {
     try {
       final profile = await getCurrentUserProfile();
@@ -208,7 +196,6 @@ class UserViewModel {
     }
   }
 
-  // Get favorite food IDs
   Future<List<String>> getFavoriteFoodIds() async {
     try {
       final profile = await getCurrentUserProfile();
@@ -218,7 +205,6 @@ class UserViewModel {
     }
   }
 
-  // Get favorite restaurant IDs
   Future<List<String>> getFavoriteRestaurantIds() async {
     try {
       final profile = await getCurrentUserProfile();

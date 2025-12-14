@@ -57,7 +57,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
     try {
       await _orderViewModel.cancelOrder(_currentOrder!.id);
       
-      // Update the current order status
+
       setState(() {
         _currentOrder = _currentOrder!.copyWith(status: OrderStatus.cancelled);
         _isCancelling = false;
@@ -94,7 +94,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const SizedBox(), // Remove back button
+        leading: const SizedBox(), 
         title: const Text(
           'Order Confirmed',
           style: TextStyle(
@@ -160,7 +160,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // Order Details Card
+      
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -359,7 +359,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Cancel Order Button (only show if order can be cancelled)
                   if (_currentOrder!.canCancel)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
