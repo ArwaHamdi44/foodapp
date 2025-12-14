@@ -72,7 +72,7 @@ class _PopularSectionState extends State<PopularSection> {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 240,
+          height: 250,
           child: _isLoading
               ? const Center(
                   child: CircularProgressIndicator(
@@ -126,11 +126,12 @@ class _PopularSectionState extends State<PopularSection> {
                               child: SizedBox(
                                 width: 148,
                                 child: Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Container(
                                       width: 148,
-                                      height: 148,
+                                      height: 140,
                                       decoration: ShapeDecoration(
                                         color: const Color(0xFFF5F5F5),
                                         shape: RoundedRectangleBorder(
@@ -154,36 +155,43 @@ class _PopularSectionState extends State<PopularSection> {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 6),
                                     Text(
                                       restaurantName,
                                       style: TextStyle(
                                         color: Colors.black.withOpacity(0.5),
-                                        fontSize: 12,
+                                        fontSize: 11,
                                         fontFamily: 'Inter',
                                         fontWeight: FontWeight.w400,
+                                        height: 1.2,
                                       ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 2),
-                                    Text(
-                                      item.name,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w400,
+                                    Flexible(
+                                      child: Text(
+                                        item.name,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 13,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w400,
+                                          height: 1.2,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
                                       item.formattedPrice,
                                       style: const TextStyle(
                                         color: Color(0xFFC23232),
-                                        fontSize: 16,
+                                        fontSize: 15,
                                         fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ],

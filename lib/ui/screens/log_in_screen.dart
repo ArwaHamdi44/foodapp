@@ -208,43 +208,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                     ),
                                   ),
                           ),
-                          const SizedBox(height: 24),
-                          const Row(
-                            children: [
-                              Expanded(
-                                child: Divider(
-                                  color: Colors.white54,
-                                  thickness: 1,
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                child: Text(
-                                  'or',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Divider(
-                                  color: Colors.white54,
-                                  thickness: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-                          _buildSocialButton(
-                            'Continue with Google',
-                            Icons.g_mobiledata,
-                          ),
-                          const SizedBox(height: 12),
-                          _buildSocialButton(
-                            'Continue with Apple',
-                            Icons.apple,
-                          ),
                           const Spacer(flex: 1),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 12),
@@ -364,27 +327,6 @@ class _LogInScreenState extends State<LogInScreen> {
             vertical: 16,
           ),
           suffixIcon: suffixIcon,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialButton(String text, IconData icon) {
-    return SizedBox(
-      height: 56,
-      child: OutlinedButton.icon(
-        onPressed: () {},
-        icon: Icon(icon, color: Colors.white, size: 24),
-        label: Text(
-          text,
-          style: const TextStyle(fontSize: 15),
-        ),
-        style: OutlinedButton.styleFrom(
-          foregroundColor: Colors.white,
-          side: const BorderSide(color: Colors.white, width: 1.5),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
         ),
       ),
     );

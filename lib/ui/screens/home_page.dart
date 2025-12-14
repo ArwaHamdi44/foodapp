@@ -8,8 +8,10 @@ import '../../viewmodels/restaurant_viewmodel.dart';
 import '../../viewmodels/food_viewmodel.dart';
 import '../../data/models/restaurant.dart';
 import '../../data/models/food.dart';
+import '../../services/auth_service.dart';
 import 'restaurant_screen.dart';
 import 'food_item_screen.dart';
+import 'log_in_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final RestaurantViewModel _restaurantViewModel = RestaurantViewModel();
   final FoodViewModel _foodViewModel = FoodViewModel();
+  final AuthService _authService = AuthService();
   final TextEditingController _searchController = TextEditingController();
 
   List<Restaurant> _restaurantResults = [];
@@ -105,6 +108,30 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  Future<void> _handleLogout() async {
+    try {
+      await _authService.signOut();
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LogInScreen(),
+          ),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Logout failed: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,6 +143,57 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   const SizedBox(height: 12),
+                  // Header with logout button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Food Ordering',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFFC23232),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Color(0xFFC23232),
+                            size: 24,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Logout'),
+                                content: const Text('Are you sure you want to logout?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      _handleLogout();
+                                    },
+                                    child: const Text(
+                                      'Logout',
+                                      style: TextStyle(color: Color(0xFFC23232)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   // Search bar
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
